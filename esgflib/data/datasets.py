@@ -29,11 +29,21 @@ def get_melbourne_data() -> pd.DataFrame:
 
 def split_train_test_data(melbourne_data: pd.DataFrame, split_year: str="1987") -> (pd.DataFrame, pd.DataFrame):
     '''
-    Split the melbourne data into a training dataframe and test dataframe.
+    Split the melbourne data into a training dataframe and a test dataframe.
     The training data is composed of all temperature points strictly anterior to the given split year.
     The test data is composed of all the points posterior or equal to the split year.
-    :param melbourne_data: pd.DataFrame
-    :param split_year: str
+    :param melbourne_data: pd.DataFrame, with at least column ['Date']
+    :param split_year: str, the year to split the data on
     :return: (pd.DataFrame, pd.DataFrame)
     '''
-    raise NotImplementedError
+
+    # Format split year variable
+    split_year = "{}".format(int(split_year) - 1)
+
+    # Trainings data. Data anterior to the given split year
+    train_data = melbourne_data.loc[:split_year]
+
+    # Test data. Data posterior or equal to the given split year
+    test_data = melbourne_data.loc[split_year:]
+
+    return train_data, test_data
